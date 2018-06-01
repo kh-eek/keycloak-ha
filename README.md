@@ -1,6 +1,6 @@
 # Keycloak HA PostgreSQL
 
-Example Docker file for clustered Keycloak using a PostgreSQL
+Keycloak HA with Postgres, based on JDBC_PING
 
 ## Usage
 
