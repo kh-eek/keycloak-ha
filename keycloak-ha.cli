@@ -1,5 +1,8 @@
 embed-server --server-config=standalone-ha.xml --std-out=echo
 
+# Makes node identifier unique getting rid of a warning in the logs
+/subsystem=transactions:write-attribute(name=node-identifier, value=${jboss.node.name})
+
 /subsystem=infinispan/cache-container=keycloak/distributed-cache=sessions:write-attribute(name=owners, value=${env.CACHE_OWNERS:2})
 /subsystem=infinispan/cache-container=keycloak/distributed-cache=authenticationSessions:write-attribute(name=owners, value=${env.CACHE_OWNERS:2})
 /subsystem=infinispan/cache-container=keycloak/distributed-cache=offlineSessions:write-attribute(name=owners, value=${env.CACHE_OWNERS:2})
