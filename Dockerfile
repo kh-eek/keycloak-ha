@@ -1,4 +1,4 @@
-FROM jboss/keycloak-postgres:3.4.3.Final
+FROM jboss/keycloak-ha-postgres:3.4.3.Final
 
 ADD ./keycloak-ha.cli /tmp/keycloak.cli
 
