@@ -38,4 +38,7 @@ embed-server --server-config=standalone-ha.xml --std-out=echo
 /interface=private:write-attribute(name=nic, value=eth0)
 /interface=private:undefine-attribute(name=inet-address)
 
+# Debug payloads given from OpenID/SAML IdP
+/subsystem=logging/logger=org.keycloak.social.user_profile_dump:write-attribute(name="level", value="DEBUG")
+
 stop-embedded-server
