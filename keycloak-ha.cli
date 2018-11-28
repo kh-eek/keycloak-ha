@@ -3,17 +3,18 @@ embed-server --server-config=standalone-ha.xml --std-out=echo
 # Makes node identifier unique getting rid of a warning in the logs
 /subsystem=transactions:write-attribute(name=node-identifier, value=${jboss.node.name})
 
+# Configure the Infinispan cache
 /subsystem=infinispan/cache-container=keycloak/distributed-cache=sessions:write-attribute(name=owners, value=${env.CACHE_OWNERS:2})
 /subsystem=infinispan/cache-container=keycloak/distributed-cache=authenticationSessions:write-attribute(name=owners, value=${env.CACHE_OWNERS:2})
 /subsystem=infinispan/cache-container=keycloak/distributed-cache=offlineSessions:write-attribute(name=owners, value=${env.CACHE_OWNERS:2})
 /subsystem=infinispan/cache-container=keycloak/distributed-cache=loginFailures:write-attribute(name=owners, value=${env.CACHE_OWNERS:2})
 
+# Make use of the JDBC_PING
 /subsystem=jgroups/stack=tcp:remove()
 /subsystem=jgroups/stack=tcp:add()
 /subsystem=jgroups/stack=tcp/transport=TCP:add(socket-binding="jgroups-tcp")
 /subsystem=jgroups/stack=tcp/protocol=JDBC_PING:add()
 /subsystem=jgroups/stack=tcp/protocol=JDBC_PING/property=datasource_jndi_name:add(value=java:jboss/datasources/KeycloakDS)
-/subsystem=jgroups/stack=tcp/protocol=JDBC_PING/property=clear_table_on_view_change:add(value=true)
 /subsystem=jgroups/stack=tcp/protocol=JDBC_PING/property=break_on_coord_rsp:add(value=true)
 
 # Statements must be adapted for PostgreSQL. Additionally, we add a 'creation_timestamp' column.
@@ -42,5 +43,8 @@ embed-server --server-config=standalone-ha.xml --std-out=echo
 /subsystem=logging/console-handler=CONSOLE:write-attribute(name="level", value=${env.KEYCLOAK_LOGLEVEL:INFO})
 /subsystem=logging/logger=org.keycloak.social.user_profile_dump:add
 /subsystem=logging/logger=org.keycloak.social.user_profile_dump:write-attribute(name="level", value=${env.KEYCLOAK_LOGLEVEL:INFO})
+
+# Automatically upgrade the Database - https://www.keycloak.org/docs/latest/upgrading/index.html#automatic-relational-database-migration
+/subsystem=keycloak-server/spi=connectionsJpa/provider=default/:map-put(name=properties,key=migrationStrategy,value=update)
 
 stop-embedded-server

@@ -1,4 +1,4 @@
-FROM jboss/keycloak-ha-postgres:3.4.3.Final
+FROM jboss/keycloak:4.6.0.Final
 
 ADD ./keycloak-ha.cli /tmp/keycloak.cli
 
@@ -9,4 +9,4 @@ USER root
 RUN rm -f /tmp/keycloak.cli
 USER jboss
 
-CMD ["-b", "0.0.0.0", "--server-config", "standalone-ha.xml"]
+CMD ["-b", "0.0.0.0"]
