@@ -23,4 +23,4 @@ Start two or more Keycloak instances that form a cluster and connect to the Post
 
 ## Other details
 
-This image extends the [`jboss/keycloak-postgres`](https://github.com/jboss-dockerfiles/keycloak) image. Please refer to the README.md for selected images for more info.
+This image extends the [`jboss/keycloak`](https://github.com/jboss-dockerfiles/keycloak) image. Please refer to the README.md for selected images for more info.
